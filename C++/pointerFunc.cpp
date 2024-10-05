@@ -1,50 +1,43 @@
 #include <iostream>
 #include <utility>
 #include <functional>
+#include <vector>
 
-
-
-bool ascending(int x, int y){
-    return x > y;
+// Comparator for ascending order
+bool ascending(int x, int y) {
+    return x < y;  // Corrected logic
 }
 
-bool descending(int x, int y){
-    return x < y;
+// Comparator for descending order
+bool descending(int x, int y) {
+    return x > y;  // Corrected logic
 }
 
-void selectionSort(int *array, int size, std::function<bool(int, int)> comp = descending){
+// Selection sort function with a comparator
+void selectionSort(int *array, int size, std::function<bool(int, int)> comp = descending) {
+    for (int startIndex = 0; startIndex < (size - 1); ++startIndex) {
+        int smallestIndex = startIndex;
 
-    for(int startIndex{0}; startIndex < (size - 1); ++startIndex){
-
-        int smallestIndex{startIndex};
-
-        for(int currentIndex{startIndex+1}; currentIndex < size; ++currentIndex){
-
-            if(comp(array[smallestIndex], array[currentIndex])){
-
+        for (int currentIndex = startIndex + 1; currentIndex < size; ++currentIndex) {
+            if (comp(array[smallestIndex], array[currentIndex])) {
                 smallestIndex = currentIndex;
-
             }
-
         }
 
         std::swap(array[startIndex], array[smallestIndex]);
-
-
     }
 }
 
-int main(){
+int main() {
+    std::vector<int> array{4, 2, 1, 5, 3}; // Using vector for dynamic size
 
-    int array[5]{4, 2, 1, 5, 3}; 
+    // Sort in ascending order
+    selectionSort(array.data(), array.size(), ascending); // Passing data() to get the raw pointer
 
-    selectionSort(array, 5);
-
-    for(int index{0}; index < 5; ++index){
-        std::cout << array[index] << '\n';
+    std::cout << "Sorted array in ascending order:\n";
+    for (const int &value : array) {
+        std::cout << value << '\n';
     }
 
-
-
-
+    return 0;
 }
